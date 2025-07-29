@@ -1,5 +1,5 @@
 from langchain.chains import RetrievalQA
-from langchain_community.llms import OpenAI
+from langchain_community.llms import Anthropic
 from backend.indexer import get_retriever_from_vectordb
 import os
 import yaml
@@ -13,10 +13,7 @@ def load_config():
     return {}
 
 def answer_query(query, retriever=None):
-    config = load_config()
-    openai_api_key = config.get('OPENAI_API_KEY', None)
-    if openai_api_key:
-        os.environ['OPENAI_API_KEY'] = openai_api_key
-    llm = OpenAI(model="gpt-3.5-turbo", temperature=0)
+    
+    llm = Anthropic(model="claude-3-haiku-20240307", temperature=0)
     qa = RetrievalQA.from_chain_type(llm=llm, retriever=retriever)
     return qa.run(query)

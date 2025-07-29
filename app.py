@@ -3,7 +3,8 @@ from backend.indexer import build_index_from_uploaded, get_retriever_from_vector
 from backend.qa_chain import answer_query
 import os
 
-openai_api_key = os.getenv("OPENAI_API_KEY")
+
+gemini_api_key = os.getenv("GEMINI_API_KEY")
 
 st.set_page_config(page_title="AI Code Explainer Chatbot", layout="wide")
 st.title("🤖 AI Code Explainer Chatbot")

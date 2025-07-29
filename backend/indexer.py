@@ -15,11 +15,11 @@ def load_code_files_from_uploaded(files, file_types=(".py", ".js")):
         file_path = os.path.join(temp_dir, filename)
         with open(file_path, "wb") as f:
             f.write(uploaded_file.getbuffer())
-        # If ZIP, extract
+        
         if filename.endswith(".zip"):
             with zipfile.ZipFile(file_path, "r") as zip_ref:
                 zip_ref.extractall(temp_dir)
-    # Walk temp_dir for code files
+  
     for root, _, files in os.walk(temp_dir):
         for fname in files:
             ext = os.path.splitext(fname)[1]
