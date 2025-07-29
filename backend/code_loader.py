@@ -11,7 +11,7 @@ def load_code_files(code_dir, file_types=(".py", ".js")):
         show_progress=True,
     )
     docs = loader.load()
-    # Filter by file extension
+    
     docs = [doc for doc in docs if os.path.splitext(doc.metadata['source'])[1] in file_types]
     return docs
 
