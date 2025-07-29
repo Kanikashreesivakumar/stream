@@ -1,0 +1,10 @@
+
+openai
+chromadb
+tiktoken
+faiss-cpu
+streamlit
+pyyaml
+watchdog
+sentence-transformers
+langchain-community
