@@ -11,7 +11,16 @@ print("Gemini API Key:", gemini_api_key)
 genai.configure(api_key=gemini_api_key)
 
 try:
-    model = genai.GenerativeModel('gemini-pro')
+    # List available models
+    models = genai.list_models()
+    print("Available models:")
+    for m in models:
+        print(f"- {m.name} (supported methods: {m.supported_generation_methods})")
+
+    # Pick a supported model (replace with a valid model name from the list)
+    # Example: 'models/gemini-1.0-pro' or similar
+    model_name = "models/gemini-2.5-pro"
+    model = genai.GenerativeModel(model_name)
     response = model.generate_content("Say hello!")
     print("Gemini API response:", response.text)
 except Exception as e:
