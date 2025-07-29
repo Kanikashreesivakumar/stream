@@ -21,9 +21,8 @@ def answer_query(query, retriever=None):
     if not gemini_api_key:
         raise ValueError("GOOGLE_API_KEY not set in environment variables.")
 
-    # Create Gemini LLM wrapper for LangChain
     llm = ChatGoogleGenerativeAI(
-        model="gemini-2.5-pro",  # or another supported model
+        model="gemini-2.5-pro",  
         google_api_key=gemini_api_key,
         temperature=0.2,
         max_output_tokens=2048,
