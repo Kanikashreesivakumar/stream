@@ -1,9 +1,8 @@
 from langchain_community.vectorstores import Chroma
-from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain.schema import Document
 from dotenv import load_dotenv
 import os
-
 
 from datasets import load_dataset
 
@@ -23,7 +22,7 @@ def load_docs():
 
 def load_docs_from_hf():
     dataset = load_dataset("squad", split="train[:100]")
-    print("Number of documents in dataset:", len(dataset))  # Add this line
+    print("Number of documents in dataset:", len(dataset))
     docs = []
     for item in dataset:
         context = item.get("context", "")
@@ -33,25 +32,24 @@ def load_docs_from_hf():
     return docs
 
 def main():
-    embeddings = GoogleGenerativeAIEmbeddings(
-        model="models/embedding-001",
-        google_api_key=os.getenv("GOOGLE_API_KEY")
+    # Use a multilingual embedding model
+    embeddings = HuggingFaceEmbeddings(
+        model_name="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
     )
     vectorstore = Chroma(
         collection_name="my_docs",
         embedding_function=embeddings,
         persist_directory=VECTOR_DB_DIR
     )
-    # Use Hugging Face dataset loader instead of local files
-    docs = load_docs_from_hf()
+    # You can switch between local or HF docs as needed
+    docs = load_docs_from_hf()  # or docs = load_docs()
     vectorstore.add_documents(docs)
     vectorstore.persist()
     print(f"Indexed {len(docs)} documents.")
 
 def check_chroma_docs():
-    embeddings = GoogleGenerativeAIEmbeddings(
-        model="models/embedding-001",
-        google_api_key=os.getenv("GOOGLE_API_KEY")
+    embeddings = HuggingFaceEmbeddings(
+        model_name="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
     )
     vectorstore = Chroma(
         collection_name="my_docs",
@@ -62,5 +60,5 @@ def check_chroma_docs():
     print(f"Chroma vectorstore contains {num_docs} documents.")
 
 if __name__ == "__main__":
-    main()               
+    main()
     check_chroma_docs()
