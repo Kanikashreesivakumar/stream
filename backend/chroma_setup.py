@@ -4,6 +4,9 @@ from langchain.schema import Document
 from dotenv import load_dotenv
 import os
 
+
+from datasets import load_dataset
+
 load_dotenv()
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
@@ -18,6 +21,17 @@ def load_docs():
                 docs.append(Document(page_content=f.read(), metadata={"source": fname}))
     return docs
 
+def load_docs_from_hf():
+    dataset = load_dataset("squad", split="train[:100]")
+    print("Number of documents in dataset:", len(dataset))  # Add this line
+    docs = []
+    for item in dataset:
+        context = item.get("context", "")
+        question = item.get("question", "")
+        docs.append(Document(page_content=f"Q: {question}\nA: {context}", metadata={"id": item.get("id", "")}))
+    print(f"Loaded {len(docs)} documents from Hugging Face dataset.")
+    return docs
+
 def main():
     embeddings = GoogleGenerativeAIEmbeddings(
         model="models/embedding-001",
@@ -28,7 +42,8 @@ def main():
         embedding_function=embeddings,
         persist_directory=VECTOR_DB_DIR
     )
-    docs = load_docs()
+    # Use Hugging Face dataset loader instead of local files
+    docs = load_docs_from_hf()
     vectorstore.add_documents(docs)
     vectorstore.persist()
     print(f"Indexed {len(docs)} documents.")
@@ -48,4 +63,4 @@ def check_chroma_docs():
 
 if __name__ == "__main__":
     main()               
-    check_chroma_docs()  
+    check_chroma_docs()
