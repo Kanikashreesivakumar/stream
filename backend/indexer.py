@@ -47,7 +47,7 @@ def create_in_memory_vectorstore(docs):
     vectordb = Chroma.from_documents(
         docs,
         embedding=embeddings,
-        persist_directory=None  # In-memory
+        persist_directory=None 
     )
     return vectordb
 

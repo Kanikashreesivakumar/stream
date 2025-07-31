@@ -5,7 +5,6 @@ from dotenv import load_dotenv
 from datasets import load_dataset
 import os
 
-# Optional: For S3 downloads
 try:
     import boto3
     from smart_open import open as sopen
@@ -25,7 +24,7 @@ def get_documents_from_hf(dataset_name="bigcode/the-stack-v2", language=None, ma
         ds = load_dataset(dataset_name, split="train", streaming=True)
     docs = []
     for i, sample in enumerate(ds):
-        # If using S3, download content
+        
         if "blob_id" in sample and "src_encoding" in sample and boto3 and sopen:
             session = boto3.Session(
                 aws_access_key_id=os.environ.get("AWS_ACCESS_KEY_ID"),
@@ -35,7 +34,7 @@ def get_documents_from_hf(dataset_name="bigcode/the-stack-v2", language=None, ma
             with sopen(s3_url, "rb", compression=".gz", transport_params={"client": s3}) as fin:
                 content = fin.read().decode(sample["src_encoding"])
         else:
-            # Fallback: use available content field
+            
             content = sample.get("content", "")
         if content:
             docs.append(Document(page_content=content, metadata={"source": sample.get("path", "hf_sample")}))

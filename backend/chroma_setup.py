@@ -32,7 +32,7 @@ def load_docs_from_hf():
     return docs
 
 def main():
-    # Use a multilingual embedding model
+   
     embeddings = HuggingFaceEmbeddings(
         model_name="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
     )

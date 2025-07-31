@@ -6,8 +6,8 @@ import os
 
 gemini_api_key = os.getenv("GEMINI_API_KEY")
 
-st.set_page_config(page_title="AI Code Explainer Chatbot", layout="wide")
-st.title("🤖 AI Code Explainer Chatbot")
+st.set_page_config(page_title="Classic RAG-Flow: User query-langchain-AI Generation Code Explainer", layout="wide")
+st.title("🤖 DecodeX AI - Embed.Retrive.Explain")
 
 with st.sidebar:
     st.header("Upload Code Files or ZIP")
