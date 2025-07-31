@@ -43,10 +43,9 @@ def check_chroma_docs():
         embedding_function=embeddings,
         persist_directory=VECTOR_DB_DIR
     )
-    # Load persisted data
     num_docs = vectorstore._collection.count()
     print(f"Chroma vectorstore contains {num_docs} documents.")
 
 if __name__ == "__main__":
-    main()               # This will index and persist your documents
-    check_chroma_docs()  # Now this will show the correct count
+    main()               
+    check_chroma_docs()  
